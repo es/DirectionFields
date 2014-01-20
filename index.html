@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+        
+        <!-- JSXGraph -->
+        <link rel="stylesheet" type="text/css" href="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css" />
+        <script type="text/javascript" src="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js"></script>
+
+        <!-- Mathquill -->
+        <link rel="stylesheet" href="css/mathquill.css">
+
+        <!-- nProgress -->
+        <link rel="stylesheet" href="css/nprogress.css">
+
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+                background-color: #eee;
+            }
+        </style>
+        
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div class="container">
+      <div class="row">
+        
+
+        <!-- <pre><jsxgraph width="500" height="500" box="box">
+        </jsxgraph></pre> -->
+        <div class="col-lg-offset-2 col-lg-6">
+          <div id="box" class="jxgbox" style="width:500px; height:500px;"></div>
+        </div>
+        <div class="col-lg-4">
+          <p>
+            Use the input box below to input to type in a differential equation. Then see as a direction field is drawn on the graph opposite the input.
+          </p>
+          <div class="">
+            <div style="margin: 0 auto; width: 300px;">
+              <span style="width: 30px"class="mathquill-embedded-latex">y'=</span>
+              <span id="math-input-box" style="width: 260px; height: 60px; padding-top: 20px; background-color: white;" class="mathquill-editable"></span>
+            </div>
+          </div>
+          <div style="margin-top: 25px" class="row">
+            <div class="col-md-6">
+              <label> # of Direction Lines</label>
+              <input type="number" id="numSqrs" value="20" min="2">
+            </div>
+            <div class="col-md-6">
+              <label> Size of Direction Squres</label>
+              <input type="txt" id="sqrSize" value="0.5" placeholder="Size of Squres">
+            </div>
+          </div>
+          <div class="row">
+            <div style="margin-top: 25px" class="text-center">
+              <button id="generateField" class="btn btn-primary"> Generate Field</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+    </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/mathquill.min.js"></script>
+        <script src="js/vendor/nprogress.js"></script>
+        <script src="js/vendor/math.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
