@@ -1,8 +1,7 @@
 (function () {
-	var math = mathjs();
 	var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-10, 10, 10, -10], axis:true});
 
-	var generateField = function (func, sqrSize, numSqrs) {
+	/*var generateField = function (func, sqrSize, numSqrs) {
 			var halfSqr = sqrSize * 0.5;
 			var pointsArr = [], lineArr = [], p1 = [], p2 = [];
 			var slope = 0;
@@ -61,31 +60,66 @@
 		  			board.create('segment', [point1, point2], {
 		  				strokeWidth: 1
 		  			});
-		  			/*pointsArr.push($.extend({}, point1));*/
-		  			/*pointsArr.push($.extend({}, point2));*/
-		  			/*board.removeObject(point1); 
-		  			board.removeObject(point2);*/ 
-		  			/*lineArr.push($.extend({}, l));*/
 		  		}
 		  	}
 		  	clearInterval(tempInterval);
 			NProgress.done(true);
+	};*/
+
+	var generateField = function (func, sqrSize, numSqrs) {
+		var dataObj = {};
+		dataObj['func'] = func;
+		dataObj['sqrSize'] = sqrSize;
+		dataObj['numSqrs'] = numSqrs;
+		
+		NProgress.start();
+		
+		var tempInterval = setInterval(function () {
+			NProgress.inc();
+		}, 1000);
+
+		var myWorker = new Worker("js/generateField.js");
+
+		if (board)
+			JXG.JSXGraph.freeBoard(board);
+		board = JXG.JSXGraph.initBoard('box', {boundingbox: [-10, 10, 10, -10], axis:true});
+
+		myWorker.onmessage = function (oEvent) {
+		  	console.log("Worker said : " + oEvent.data);
+		  	if (oEvent.data.finished) {
+		  		clearInterval(tempInterval);
+				NProgress.done(true);
+			}
+		  	else {
+		  		point1 = board.create('point', oEvent.data[0], {
+		  			visible: false
+		  		});
+		  		point2 = board.create('point', oEvent.data[1], {
+		  			visible: false
+		  		});
+		  		board.create('segment', [point1, point2], {
+		  			strokeWidth: 1
+		  		});	
+		  	}
+		};
+		myWorker.postMessage(dataObj);
 	};
 
-	var findX = function (y, xCenter, yCenter, m) {
-		return (y - yCenter + m * xCenter) / m;
-	};
+	String.prototype.replaceAll = function (searchStr, replaceStr) {
+		return this.split(searchStr).join(replaceStr);
+	}
 
-	var findY = function (x, xCenter, yCenter, m) {
-		return m * x + yCenter - m * xCenter;
-	};
-
-	var calcSlope = function(func, x, y) {
-		var scope = {};
-		scope ['x'] = x; 
-		scope ['y'] = y; 
-		console.log('scope:', scope);
-		return math.eval(func, scope);
+	var parseLatex = function (latex) {
+		return latex.replaceAll('{','(')
+			 		.replaceAll('}',')')
+			 		.replaceAll('\\right)',')')
+			 		.replaceAll('\\left(','(')
+			 		.replaceAll('\\cdot ','*')
+			 		.replaceAll('\\cdot','*')
+			 		.replaceAll('\\pi','pi')
+			 		.replaceAll('\\sqrt','sqrt');
+			 		/*.replace('\\log_b','(')
+			 		.replace('{','(')*/
 	};
 
 	$('#generateField').on('click', function () {
@@ -93,10 +127,10 @@
 		if (f.length === 0)
 			return;
 		console.log('f:', f);
-
+		console.log('parseLatex(f):', parseLatex(f));
 		var sqrSize = Number($('#sqrSize').val());
 		var numSqrs = Number($('#numSqrs').val());
-		generateField(f, sqrSize, numSqrs);
+		generateField(parseLatex(f), sqrSize, numSqrs);
 	});
 
 	$('#sqrSize').on('change', function () {
